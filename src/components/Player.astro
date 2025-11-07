@@ -1,0 +1,15 @@
+---
+const { src } = Astro.props;
+---
+
+<audio controls src={src}>
+  <p>
+    Your browser does not support the <code>audio</code> element.
+  </p>
+</audio>
+
+<style>
+  audio {
+    width: 100%;
+  }
+</style>

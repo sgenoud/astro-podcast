@@ -1,16 +1,36 @@
 ---
+import { getCollection, getEntry } from "astro:content";
+import BaseLayout from "../components/BaseLayout.astro";
+import EpisodeCard from "../components/EpisodeCard.astro";
+import { CONSTANTS } from "../constants.ts";
 
+const allEpisodes = await getCollection("episodes");
+const episodes = allEpisodes.sort((a, b) => {
+  return a.data.date < b.data.date ? 1 : -1;
+});
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <main>
+    <header>
+      <hgroup>
+        <h1>{CONSTANTS.title}</h1>
+        <p class="subtitle">{CONSTANTS.description}</p>
+      </hgroup>
+    </header>
+
+    {
+      episodes.map(({ id, data: { title, summary, date } }) => (
+        <EpisodeCard id={id} title={title} date={date}>
+          {summary}
+        </EpisodeCard>
+      ))
+    }
+  </main>
+</BaseLayout>
+
+<style>
+  .subtitle {
+    color: var(--pico-primary);
+  }
+</style>

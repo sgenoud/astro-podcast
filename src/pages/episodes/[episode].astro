@@ -1,0 +1,49 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../components/BaseLayout.astro";
+import Player from "../../components/Player.astro";
+import { CONSTANTS } from "../../CONSTANTS";
+
+export async function getStaticPaths() {
+  const episodes = await getCollection("episodes");
+  return episodes.map((episode) => ({
+    params: { episode: episode.id },
+    props: { episode },
+  }));
+}
+
+const { episode } = Astro.props;
+const { Content } = await render(episode);
+
+const formattedDate = new Intl.DateTimeFormat(CONSTANTS.language || "en", {
+  dateStyle: "long",
+}).format(episode.data.date);
+---
+
+<BaseLayout>
+  <header>
+    <nav>
+      <ul>
+        <li>
+          <strong>
+            <a href="/">{CONSTANTS.title}</a>
+          </strong>
+        </li>
+      </ul>
+    </nav>
+    <hgroup>
+      <h1>{episode.data.title}</h1>
+      <p>
+        <small>{formattedDate}</small>
+      </p>
+    </hgroup>
+    <main>
+      <section>
+        <Player src={episode.data.audio_url} />
+      </section>
+      <section>
+        <Content />
+      </section>
+    </main>
+  </header>
+</BaseLayout>

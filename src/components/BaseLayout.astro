@@ -1,0 +1,23 @@
+---
+import { CONSTANTS } from "../constants.ts";
+---
+
+<html lang={CONSTANTS.language || "en"}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={CONSTANTS.description} />
+    <title>{CONSTANTS.title}</title>
+    <link rel="stylesheet" href="/pico.classless.jade.min.css" />
+  </head>
+  <body>
+    <slot />
+  </body>
+  <style>
+    body {
+      max-width: 35em;
+      max-width: 60ch;
+      margin: auto;
+    }
+  </style>
+</html>
